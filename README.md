@@ -11,6 +11,7 @@ Here is a tutorial how to get your imgur client id: <br>
 [https://dubble.so/guides/how-to-get-imgur-client-id-purlxhv84a0m3mlsiak7]()
 <br>
 You should now be able to start the program.
+There you can login via your credentials or using web cookies.
 
 # Config
 | Key                       | Description                                                                                           |
