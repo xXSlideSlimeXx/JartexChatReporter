@@ -1,7 +1,7 @@
 # JartexChatReporter
 After reporting many players, I decided to automate the process a bit.
 
-This program is able to create quick reports and sends then to jartex using https requests.
+This program is able to create quick reports and sends then to jartex using http requests.
 It helps uploading screenshots and can also delete then, so that the screenshot folder is not full with reports.
 
 # Setup
@@ -9,6 +9,8 @@ Download the latest release. Drag the zip file in a external folder and unpack i
 Open the file `config.properties` and type in after `imgur_client_id=` your imgur client id.
 Here is a tutorial how to get your imgur client id: <br>
 [https://dubble.so/guides/how-to-get-imgur-client-id-purlxhv84a0m3mlsiak7]()
+<br>
+You should now be able to start the program.
 
 # Config
 | Key                       | Description                                                                                           |
