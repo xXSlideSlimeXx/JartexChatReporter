@@ -2,10 +2,9 @@ package de.xXSlideSlimeXx.main.windows.report;
 
 import de.xXSlideSlimeXx.main.Main;
 import de.xXSlideSlimeXx.main.config.ConfigKey;
-import de.xXSlideSlimeXx.main.doc.mute.BrokenRule;
 import de.xXSlideSlimeXx.main.doc.mute.Gamemode;
 import de.xXSlideSlimeXx.main.doc.mute.ReportDocument;
-import de.xXSlideSlimeXx.main.imgur.ImgurHelper;
+import de.xXSlideSlimeXx.main.upload.ImgurUpload;
 import de.xXSlideSlimeXx.main.jartex.JartexSender;
 import de.xXSlideSlimeXx.main.windows.report.report.*;
 
@@ -31,6 +30,7 @@ public final class ReportPanel extends JPanel {
     private final GamemodeSelBoxPanel gamemodeSelPanel;
     private final ExtraInfoJPanel extraInfoJPanel;
     private final ScreenshotSelBoxPanel screenshotSelBoxPanel;
+    private final PictureUploadPanel pictureUploadPanel;
 
     public ReportPanel() {
         timer = new Timer();
@@ -41,6 +41,7 @@ public final class ReportPanel extends JPanel {
         this.reporterNamePanel = new ReporterNamePanel();
         this.ruleBreakerNamePanel = new RuleBreakerNamePanel();
         this.extraInfoJPanel = new ExtraInfoJPanel();
+        this.pictureUploadPanel = new PictureUploadPanel();
 
         this.reporterNamePanel.init();
         this.ruleBreakerNamePanel.init();
@@ -60,6 +61,8 @@ public final class ReportPanel extends JPanel {
         panel.add(this.extraInfoJPanel);
         panel.add(Box.createRigidArea(new Dimension(0, 20)));
         panel.add(this.screenshotSelBoxPanel);
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
+        panel.add(this.pictureUploadPanel);
         add(panel, BorderLayout.CENTER);
         add(getSubmitButton(), BorderLayout.SOUTH);
         //add second/third/fourth last screenshot
@@ -95,14 +98,14 @@ public final class ReportPanel extends JPanel {
                    scheduleResetButton(button, "Please type in a valid rule breaker name");
                    return;
                 }
-                final File[] files = ImgurHelper.getScreenshotFolder().listFiles();
+                final File[] files = ImgurUpload.getScreenshotFolder().listFiles();
                 if(files == null || screenshotSelBoxPanel.getComboBox().getSelectedIndex() >= files.length) {
                     scheduleResetButton(button, "The " + screenshotSelBoxPanel.getComboBox().getSelectedItem() +
                             " does not exist!");
                 }
                 button.setText("Sending...");
                 new Thread(() -> {
-                    if(JartexSender.sendReport(Main.client, Main.firstCookie, new ReportDocument(
+                    if(JartexSender.sendReport(Main.client, pictureUploadPanel.getSelectedPictureUpload(), Main.firstCookie, new ReportDocument(
                             reporterNamePanel.getTextField().getText().trim(),
                             ruleBreakerNamePanel.getTextField().getText().trim(),
                             extraInfoJPanel.getTextField().getText().trim(),
@@ -113,7 +116,7 @@ public final class ReportPanel extends JPanel {
                         button.setPreferredSize(new Dimension(420, 40));
                         button.setForeground(Color.GREEN);
                         schedule(button);
-                        final File img = ImgurHelper.getScreenshot().get(screenshotSelBoxPanel.getComboBox().getSelectedIndex());
+                        final File img = ImgurUpload.getScreenshot().get(screenshotSelBoxPanel.getComboBox().getSelectedIndex());
                         if(img != null && img.exists() && Boolean.parseBoolean(Main.CONFIG.getOrDefault(ConfigKey.DELETE_FILE_AFTER_REPORT))) {
                             try{
                                 img.delete();

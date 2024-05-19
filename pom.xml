@@ -4,16 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.example</groupId>
-    <artifactId>JartexReporter</artifactId>
+    <groupId>de.xXSlideSlimeXx</groupId>
+    <artifactId>JartexChatReporter</artifactId>
     <version>1.0</version>
     <build>
-        <!--<sourceDirectory>src</sourceDirectory>
+        <sourceDirectory>src</sourceDirectory>
         <resources>
             <resource>
                 <directory>resources</directory>
             </resource>
-        </resources>-->
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

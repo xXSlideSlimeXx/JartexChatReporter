@@ -13,6 +13,7 @@ import org.apache.http.message.BasicHeader;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -93,7 +94,7 @@ public final class JartexHelper {
             final BrotliInputStream brotliInputStream = new BrotliInputStream(httpResponse.getEntity().getContent());
             final BufferedReader reader = new BufferedReader(new InputStreamReader(brotliInputStream));
             return reader.lines().collect(Collectors.joining());
-        } catch (IOException e) {
+        } catch (UncheckedIOException | IOException e) {
             e.printStackTrace();
         }
         return null;

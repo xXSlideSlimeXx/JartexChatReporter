@@ -1,8 +1,8 @@
 package de.xXSlideSlimeXx.main.config;
 
-import de.xXSlideSlimeXx.main.Main;
 import de.xXSlideSlimeXx.main.doc.mute.Gamemode;
-import de.xXSlideSlimeXx.main.imgur.ImgurHelper;
+import de.xXSlideSlimeXx.main.upload.ImgurUpload;
+import de.xXSlideSlimeXx.main.upload.PictureUploaders;
 import org.apache.http.client.HttpClient;
 
 import javax.swing.*;
@@ -15,17 +15,14 @@ import java.util.List;
  */
 public final class ConfigManager {
 
-    public static boolean checkConfiguration(HttpClient client, Config cf) {
+    public static boolean checkConfiguration(Config cf) {
         List<String> errors = new ArrayList<>();
         Gamemode gm = Gamemode.fromName(cf.getOrDefault(ConfigKey.DEFAULT_GAMEMODE_SELECTED));
-        String clientId = cf.getOrDefault(ConfigKey.IMGUR_CLIENT_ID);
         if(gm == null) {
             errors.add("- Invalid Gamemode");
         }
-        if(clientId == null || clientId.trim().isEmpty()) {
-            errors.add("- Invalid imgur client ID");
-        } else if(ImgurHelper.checkClientId(client, clientId)) {
-            errors.add("- Client ID does not work for uploading");
+        if(PictureUploaders.getValidUploaders().isEmpty()) {
+            errors.add("- No upload service is set up");
         }
         if(!errors.isEmpty()) {
             JOptionPane.showMessageDialog(null, "These errors occurred during startup:\n" + String.join("\n", errors),

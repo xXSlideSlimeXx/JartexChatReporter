@@ -53,7 +53,6 @@ public class LoginPanel extends JPanel {
                 } else {
                     cookiesPanel.onLogin(frame);
                 }
-                System.out.println("hi");
             }
         });
         return button;

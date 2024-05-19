@@ -3,7 +3,8 @@ package de.xXSlideSlimeXx.main.jartex;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import de.xXSlideSlimeXx.main.doc.mute.ReportDocument;
-import de.xXSlideSlimeXx.main.imgur.ImgurHelper;
+import de.xXSlideSlimeXx.main.upload.PictureUploader;
+import de.xXSlideSlimeXx.main.util.UploadUtil;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -74,7 +75,7 @@ public final class JartexSender {
 
         final List<Header> basicHeaders = new ArrayList<>(List.of(HEADERS_CHAT_REPORT));
         final HttpPost post = new HttpPost("https://jartexnetwork.com/form/chat-reports.9/submit");
-        final String bound = "----WebKitFormBoundary" + generateRandom(16);
+        final String bound = "----WebKitFormBoundary" + UploadUtil.generateRandom();
 
         basicHeaders.add(new BasicHeader("Content-Type", "multipart/form-data; boundary=" + bound));
         final JsonObject obj = getJsonObject(xfToken, reportDocument);
@@ -126,18 +127,8 @@ public final class JartexSender {
         return obj;
     }
 
-    public static String generateRandom(final int to) {
-        String abc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        StringBuilder builder = new StringBuilder();
-        for(int i = 0; i< to; i++) {
-            builder.append(abc.charAt(new Random().nextInt(abc.length())));
-        }
-        return builder.toString();
-    }
-
-    public static boolean sendReport(final HttpClient client, final String firstCookie, final ReportDocument reportDocument, int latest) {
-        final String img = ImgurHelper.uploadScreenshot(client, reportDocument.getRuleBreaker()
-                + " | " + reportDocument.getBrokenRule().getName(), reportDocument.getExtra(), latest);
+    public static boolean sendReport(final HttpClient client, PictureUploader uploader, final String firstCookie, final ReportDocument reportDocument, int latest) {
+        final String img = uploader.uploadScreenshot(client, reportDocument, latest);
         if(reportDocument.getProof().isEmpty()) {
             System.out.println(img);
             reportDocument.setProof(img);

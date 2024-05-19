@@ -1,5 +1,7 @@
 package de.xXSlideSlimeXx.main.windows.login.login;
 
+import de.xXSlideSlimeXx.main.Main;
+import de.xXSlideSlimeXx.main.config.ConfigKey;
 import de.xXSlideSlimeXx.main.windows.login.LoginPanel;
 import de.xXSlideSlimeXx.main.windows.login.login.cookies.LoginCookiesPanel;
 import de.xXSlideSlimeXx.main.windows.login.login.credentials.LoginCredentialsPanel;
@@ -22,6 +24,10 @@ public class LoginTypeSelPanel extends JPanel{
     private final LoginCookiesPanel cookiesPanel;
 
     public LoginTypeSelPanel(LoginPanel loginPanel, LoginCredentialsPanel credentialsPanel, LoginCookiesPanel cookiesPanel) {
+        if(!Main.CONFIG.getOrDefault(ConfigKey.LOGIN_XF_USER).isEmpty() && !Main.CONFIG.getOrDefault(ConfigKey.LOGIN_XF_SESSION).isEmpty()) {
+            loginCookies = true;
+        }
+
         this.loginPanel = loginPanel;
         this.credentialsPanel = credentialsPanel;
         this.cookiesPanel = cookiesPanel;

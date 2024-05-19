@@ -13,6 +13,7 @@ import java.net.URL;
  */
 public final class WindowLoad {
 
+    public static String LOGO_URL = "https://avatars.githubusercontent.com/u/39830022?s=280&v=4";
     public static void load() {
         new LoginFrame();
     }
@@ -20,7 +21,7 @@ public final class WindowLoad {
     public static void setupDefault(final JFrame frame) {
         ImageIcon Iicon = null;
         try {
-            Iicon = new ImageIcon(new URL("https://avatars.githubusercontent.com/u/39830022?s=280&v=4"));
+            Iicon = new ImageIcon(new URL(LOGO_URL));
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
