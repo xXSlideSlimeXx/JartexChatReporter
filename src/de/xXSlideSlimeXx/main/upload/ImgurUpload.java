@@ -1,5 +1,8 @@
 package de.xXSlideSlimeXx.main.upload;
 
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import de.xXSlideSlimeXx.main.Main;
 import de.xXSlideSlimeXx.main.config.Config;
 import de.xXSlideSlimeXx.main.config.ConfigKey;
 import de.xXSlideSlimeXx.main.doc.mute.ReportDocument;
@@ -47,19 +50,34 @@ public class ImgurUpload extends PictureUploader {
                     .setBoundary("----WebKitFormBoundary" + UploadUtil.generateRandom());
             builder.addBinaryBody("image", file);
             builder.addTextBody("title", document.getRuleBreaker() + " | " + document.getBrokenRule().getName());
-            builder.addTextBody("description", document.getExtra());
             builder.addTextBody("type", "file");
             post.addHeader("Authorization", "Client-ID " + clientId);
             post.setEntity(builder.build());
-            return client.execute(post, httpResponse -> {
-                final String s = EntityUtils.toString(httpResponse.getEntity());
-                final int index = s.indexOf("\"link\":\"") + "\"link\":\"".length();
-                return s.substring(index, s.lastIndexOf(".", s.indexOf("\"", index))).replace("\\/", "/")
-                        .replace("\u200B", "");
+            String[] linkData = client.execute(post, httpResponse -> {
+                final JsonObject data = JsonParser.parseString(EntityUtils.toString(httpResponse.getEntity())).getAsJsonObject().get("data").getAsJsonObject();
+                return new String[] {"https://imgur.com/" + data.get("id").getAsString(), data.get("deletehash").getAsString()};
             });
+            changeDesc(linkData[0], linkData[1], document);
+
+            return linkData[0];
         } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private void changeDesc(String link, String imgDeleteHash, ReportDocument doc) {
+        try {
+            final HttpPost post = new HttpPost("https://api.imgur.com/3/image/" + imgDeleteHash);
+            final MultipartEntityBuilder builder = MultipartEntityBuilder.create()
+                    .setBoundary("----WebKitFormBoundary" + UploadUtil.generateRandom());
+            builder.addTextBody("description", "Link: " + link + "\n\n" + doc.getExtra());
+            builder.addTextBody("type", "file");
+            post.addHeader("Authorization", "Client-ID " + clientId);
+            post.setEntity(builder.build());
+            Main.client.execute(post);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

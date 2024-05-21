@@ -4,6 +4,7 @@ import com.nixxcode.jvmbrotli.common.BrotliLoader;
 import de.xXSlideSlimeXx.main.config.Config;
 import de.xXSlideSlimeXx.main.config.ConfigManager;
 import de.xXSlideSlimeXx.main.jartex.JartexHelper;
+import de.xXSlideSlimeXx.main.upload.ImgurUpload;
 import de.xXSlideSlimeXx.main.upload.PictureUploaders;
 import de.xXSlideSlimeXx.main.windows.WindowLoad;
 import org.apache.http.client.CookieStore;
