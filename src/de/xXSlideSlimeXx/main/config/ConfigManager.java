@@ -24,6 +24,11 @@ public final class ConfigManager {
         if(PictureUploaders.getValidUploaders().isEmpty()) {
             errors.add("- No upload service is set up");
         }
+        try{
+            Integer.parseInt(cf.getOrDefault(ConfigKey.TIME_LIMIT));
+        }catch (final NumberFormatException ex) {
+            errors.add("- Invalid time limit");
+        }
         if(!errors.isEmpty()) {
             JOptionPane.showMessageDialog(null, "These errors occurred during startup:\n" + String.join("\n", errors),
                     "Configuration error", JOptionPane.ERROR_MESSAGE);

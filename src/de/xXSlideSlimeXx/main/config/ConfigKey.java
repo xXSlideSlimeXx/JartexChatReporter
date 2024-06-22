@@ -12,6 +12,7 @@ public enum ConfigKey {
     LOGIN_XF_USER("login_xf_user", ""),
     IMGUR_CLIENT_ID("imgur_client_id", null),
     IMGBB_API_KEY("imgbb_api_key", null),
+    TIME_LIMIT("time_limit", "15"),
     ;
 
     private final String key;

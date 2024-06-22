@@ -22,6 +22,8 @@ import java.util.TimerTask;
  */
 public final class ReportPanel extends JPanel {
 
+    private final int timeLimit;
+
     private final Timer timer;
 
     private final ReporterNamePanel reporterNamePanel;
@@ -34,6 +36,9 @@ public final class ReportPanel extends JPanel {
 
     public ReportPanel() {
         timer = new Timer();
+
+        this.timeLimit = Integer.parseInt(Main.CONFIG.getOrDefault(ConfigKey.TIME_LIMIT));
+
         setLayout(new BorderLayout(0, 30));
         this.screenshotSelBoxPanel = new ScreenshotSelBoxPanel();
         this.brokenRuleSelPanel = new BrokenRuleSelBoxPanel();
@@ -104,7 +109,7 @@ public final class ReportPanel extends JPanel {
                             " does not exist!");
                 }
                 button.setText("Sending...");
-                new Thread(() -> {
+                Thread thread = new Thread(() -> {
                     if(JartexSender.sendReport(Main.client, pictureUploadPanel.getSelectedPictureUpload(), Main.firstCookie, new ReportDocument(
                             reporterNamePanel.getTextField().getText().trim(),
                             ruleBreakerNamePanel.getTextField().getText().trim(),
@@ -128,7 +133,17 @@ public final class ReportPanel extends JPanel {
                     } else {
                         scheduleResetButton(button, "Sending failed! Maybe login went wrong");
                     }
-                }).start();
+                });
+                thread.start();
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        if(thread.isAlive()) {
+                            scheduleResetButton(button, "Sending failed! Time limit exceeded");
+                            thread.interrupt();
+                        }
+                    }
+                }, 1000L * timeLimit);
             }
         });
 
