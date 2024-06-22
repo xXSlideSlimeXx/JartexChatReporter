@@ -34,6 +34,7 @@ Open the file `config.properties` and type in after `imgbb_api_key=` your api ke
 | login_xf_user             | The xf_user cookie. Can be retrived by browser extension                                              |
 | imgur_client_id           | The imgur client id                                                                                   |           
 | imgbb_api_key             | The imgbb api key                                                                                     |
+| time_limit                | The maximum time it should take to send a report (in seconds)                                         |
 <br>
 
 | Gamemode          |
