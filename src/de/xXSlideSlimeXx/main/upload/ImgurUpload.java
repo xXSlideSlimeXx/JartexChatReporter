@@ -2,15 +2,14 @@ package de.xXSlideSlimeXx.main.upload;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import de.xXSlideSlimeXx.main.Main;
 import de.xXSlideSlimeXx.main.config.Config;
 import de.xXSlideSlimeXx.main.config.ConfigKey;
 import de.xXSlideSlimeXx.main.doc.mute.ReportDocument;
-import de.xXSlideSlimeXx.main.jartex.JartexSender;
 import de.xXSlideSlimeXx.main.util.UploadUtil;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.mime.MultipartEntityBuilder;
+import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 
 import java.io.File;
@@ -43,8 +42,9 @@ public class ImgurUpload extends PictureUploader {
     }
 
     @Override
-    public String uploadPicture(final HttpClient client, final File file, final ReportDocument document) {
+    public String uploadPicture(final HttpClient client1, final File file, final ReportDocument document) {
         try {
+            HttpClient client = HttpClients.createDefault();
             final HttpPost post = new HttpPost("https://api.imgur.com/3/image");
             final MultipartEntityBuilder builder = MultipartEntityBuilder.create()
                     .setBoundary("----WebKitFormBoundary" + UploadUtil.generateRandom());
@@ -57,8 +57,7 @@ public class ImgurUpload extends PictureUploader {
                 final JsonObject data = JsonParser.parseString(EntityUtils.toString(httpResponse.getEntity())).getAsJsonObject().get("data").getAsJsonObject();
                 return new String[] {"https://imgur.com/" + data.get("id").getAsString(), data.get("deletehash").getAsString()};
             });
-            changeDesc(linkData[0], linkData[1], document);
-
+            changeDesc(client, linkData[0], linkData[1], document);
             return linkData[0];
         } catch (Exception e) {
             e.printStackTrace();
@@ -66,7 +65,7 @@ public class ImgurUpload extends PictureUploader {
         return null;
     }
 
-    private void changeDesc(String link, String imgDeleteHash, ReportDocument doc) {
+    private void changeDesc(HttpClient client, String link, String imgDeleteHash, ReportDocument doc) {
         try {
             final HttpPost post = new HttpPost("https://api.imgur.com/3/image/" + imgDeleteHash);
             final MultipartEntityBuilder builder = MultipartEntityBuilder.create()
@@ -75,7 +74,7 @@ public class ImgurUpload extends PictureUploader {
             builder.addTextBody("type", "file");
             post.addHeader("Authorization", "Client-ID " + clientId);
             post.setEntity(builder.build());
-            Main.client.execute(post);
+            client.execute(post);
         } catch (Exception e) {
             e.printStackTrace();
         }
