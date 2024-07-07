@@ -5,9 +5,8 @@ package de.xXSlideSlimeXx.main.doc.mute;
  * @since 20.11.2023
  */
 public enum Gamemode {
-    MINIGAMES("Minigames", (byte) 8),
-    PRACTICE("Practice", (byte) 7),
-    LOBBY("Lobby", (byte) 11),
+    MINIGAMES("Minigames", (byte) 7),
+    LOBBY("Lobby", (byte) 10),
     KITPVP("KitPvP", (byte) 6),
     IMMORTAL_FACTIONS("Immortal Factions", (byte) 1),
     SKYBLOCK_DREAM("Skyblock Dream", (byte) 2),
@@ -17,8 +16,8 @@ public enum Gamemode {
 
 
 
-    LIFESTEAL("Lifesteal", (byte) 9),
-    GENS("Gens", (byte) 10),
+    LIFESTEAL("Lifesteal", (byte) 8),
+    GENS("Gens", (byte) 9),
 
     ;
 
