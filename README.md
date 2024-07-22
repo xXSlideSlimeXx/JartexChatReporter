@@ -4,10 +4,14 @@ After reporting many players, I decided to automate the process a bit.
 This program is able to create quick reports and sends then to jartex using http requests.
 It helps to upload screenshots to an image uploading service and can also delete then, so that the screenshot folder is not full with reports.
 
+![Alt text](https://i.imgur.com/1ipnHpz.png "Program")
+
 # Setup
 Download the latest release. Drag the zip file in a external folder and unpack it.
 Now open the start file and then a gui shows up. 
 Log in (via credentials or web cookies) and then you are ready.
+
+![Alt text](https://i.imgur.com/cqFHABe.png "Login")
 
 ## Imgur
 Currently, you can only use [Freeimage.host](https://Freeimage.host) to upload images. 
