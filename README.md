@@ -44,7 +44,6 @@ Open the file `config.properties` and type in after `imgbb_api_key=` your api ke
 | Gamemode          |
 |-------------------|
 | Minigames         |
-| Practice          |
 | Lobby             |
 | Kitpvp            |
 | Immortal Factions |
